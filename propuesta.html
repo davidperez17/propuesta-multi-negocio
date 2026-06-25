@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propuesta — Panel Multi-Negocio | Servicios Digitales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ──────────────────────────────────────────────── */
+:root {
+  --e: #0098db;
+  --b: #015afc;
+  --d: #012fd3;
+  --n: #0101a7;
+  --w: #ffffff;
+  --g0: #f4f5f8;
+  --g1: #ebebeb;
+  --g2: #8c8c8c;
+  --dk: #1a1c1f;
+  --r: 10px;
+  --rl: 18px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.06);
+  --shadow-lift: 0 4px 8px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.10);
+}
+
+/* ── RESET ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--dk);
+  background: var(--w);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { display: block; max-width: 100%; }
+
+/* ── TOPBAR ──────────────────────────────────────────────── */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 56px;
+  background: rgba(26,28,31,.92);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px;
+}
+.topbar-logo { display: flex; align-items: center; gap: 10px; }
+.topbar-logo svg { height: 26px; width: auto; }
+.topbar-name { color: var(--w); font-size: 13px; font-weight: 700; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-date { display: none; color: var(--g2); font-size: 12px; }
+.topbar-cta {
+  background: linear-gradient(90deg, var(--d), var(--b));
+  color: var(--w); font-size: 12px; font-weight: 700;
+  padding: 7px 16px; border-radius: 8px; white-space: nowrap;
+  transition: opacity .15s;
+}
+.topbar-cta:hover { opacity: .85; }
+
+/* ── HERO ────────────────────────────────────────────────── */
+.hero {
+  position: relative; overflow: hidden;
+  min-height: 100svh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 112px 20px 80px;
+  background: linear-gradient(155deg, var(--n) 0%, var(--d) 40%, #024be0 70%, var(--b) 100%);
+}
+
+/* Animated dot grid */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  pointer-events: none;
+  animation: grid-drift 20s linear infinite;
+}
+
+@keyframes grid-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 28px 28px; }
+}
+
+/* Orbs */
+.orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(70px); pointer-events: none;
+}
+.orb-1 {
+  width: 340px; height: 340px;
+  background: rgba(0,152,219,.25);
+  top: -60px; left: -80px;
+  animation: float-a 12s ease-in-out infinite;
+}
+.orb-2 {
+  width: 280px; height: 280px;
+  background: rgba(1,47,211,.3);
+  bottom: -40px; right: -60px;
+  animation: float-b 15s ease-in-out infinite;
+}
+.orb-3 {
+  width: 180px; height: 180px;
+  background: rgba(0,152,219,.18);
+  top: 50%; right: 15%;
+  animation: float-a 9s ease-in-out infinite reverse;
+}
+
+@keyframes float-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(30px, -20px) scale(1.05); }
+  66%       { transform: translate(-20px, 15px) scale(.97); }
+}
+@keyframes float-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(-25px, 20px) scale(1.08); }
+  70%       { transform: translate(15px, -15px) scale(.95); }
+}
+
+.hero-inner {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 720px;
+  text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+}
+
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.18);
+  color: rgba(255,255,255,.88);
+  padding: 6px 14px; border-radius: 100px;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.hero-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--e); flex-shrink: 0;
+  box-shadow: 0 0 8px var(--e);
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .6; transform: scale(.75); }
+}
+
+.hero-h1 {
+  color: var(--w);
+  font-size: clamp(2.1rem, 8vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.03;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  margin-bottom: 20px;
+}
+.hero-h1 em {
+  font-style: normal;
+  color: var(--e);
+}
+
+.hero-sub {
+  color: rgba(255,255,255,.62);
+  font-size: clamp(.9rem, 3.5vw, 1.1rem);
+  line-height: 1.7;
+  max-width: 480px;
+  margin-bottom: 36px;
+}
+
+.hero-for {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(0,152,219,.12);
+  border: 1px solid rgba(0,152,219,.28);
+  padding: 10px 20px; border-radius: var(--r);
+  margin-bottom: 36px;
+}
+.hero-for-pre { font-size: 11px; color: rgba(255,255,255,.4); font-weight: 400; }
+.hero-for-name { font-size: 13px; font-weight: 700; color: var(--e); letter-spacing: .04em; text-transform: uppercase; }
+
+.hero-scroll {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  color: rgba(255,255,255,.3); font-size: 11px; font-weight: 500;
+  letter-spacing: .06em; text-transform: uppercase;
+  margin-top: 16px;
+}
+.hero-scroll-line {
+  width: 1px; height: 32px;
+  background: linear-gradient(to bottom, rgba(255,255,255,.3), transparent);
+  animation: scroll-line 1.8s ease-in-out infinite;
+}
+@keyframes scroll-line {
+  0%, 100% { transform: scaleY(1); opacity: .6; }
+  50%       { transform: scaleY(.5); opacity: .2; }
+}
+
+/* ── LAYOUT ──────────────────────────────────────────────── */
+.wrap { width: 100%; max-width: 1100px; margin: 0 auto; }
+.sec { padding: 72px 20px; }
+.sec--alt { background: var(--g0); }
+.sec--dk  { background: var(--dk); }
+
+/* ── SECTION TYPOGRAPHY ──────────────────────────────────── */
+.sh {
+  font-size: clamp(1.65rem, 5vw, 2.4rem);
+  font-weight: 800; letter-spacing: -.03em;
+  line-height: 1.1; text-wrap: balance;
+  margin-bottom: 12px;
+}
+.sh--w { color: var(--w); }
+.sp {
+  color: var(--g2); font-size: .95rem;
+  line-height: 1.72; max-width: 56ch;
+}
+.sp--w { color: rgba(255,255,255,.42); }
+.hd { margin-bottom: 40px; }
+
+/* ── OVERVIEW ────────────────────────────────────────────── */
+.ov-grid { display: flex; flex-direction: column; gap: 40px; }
+.ov-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; }
+.ov-body p  { color: var(--g2); font-size: .9rem; line-height: 1.78; }
+.ov-body p + p { margin-top: 12px; }
+
+.ov-cards { display: flex; flex-direction: column; gap: 10px; }
+.ov-card {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 16px 18px;
+  background: var(--w);
+  border: 1px solid var(--g1);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-card);
+  transition: transform .2s cubic-bezier(.22,.68,0,1.2), box-shadow .2s;
+}
+.ov-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lift);
+}
+.ov-icon {
+  width: 38px; height: 38px; border-radius: 9px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--n), var(--e));
+  display: flex; align-items: center; justify-content: center; font-size: 17px;
+}
+.ov-text strong { display: block; font-size: .84rem; font-weight: 700; margin-bottom: 3px; }
+.ov-text span   { font-size: .77rem; color: var(--g2); line-height: 1.5; }
+
+/* ── STRUCTURE ───────────────────────────────────────────── */
+.struct-box {
+  background: var(--dk); border-radius: var(--rl);
+  padding: 40px 20px; margin-top: 40px;
+  overflow: hidden;
+}
+.struct-root  { text-align: center; margin-bottom: 28px; }
+.struct-icon  {
+  width: 58px; height: 58px; border-radius: 14px;
+  margin: 0 auto 10px;
+  background: linear-gradient(135deg, var(--d), var(--e));
+  display: flex; align-items: center; justify-content: center; font-size: 25px;
+}
+.struct-name { color: var(--w); font-size: .92rem; font-weight: 700; }
+.struct-sub  { color: var(--g2); font-size: .7rem; margin-top: 2px; }
+.struct-line {
+  width: 2px; height: 24px; margin: 0 auto;
+  background: linear-gradient(to bottom, var(--b), rgba(1,90,252,.1));
+}
+.struct-negs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.neg {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: var(--r);
+  padding: 14px 10px; text-align: center;
+  transition: background .2s, border-color .2s;
+}
+.neg:hover {
+  background: rgba(255,255,255,.07);
+  border-color: rgba(0,152,219,.3);
+}
+.neg-em  { font-size: 22px; margin-bottom: 7px; }
+.neg-nm  { color: var(--w); font-size: .72rem; font-weight: 600; }
+.neg-lbl { color: var(--g2); font-size: .65rem; margin-top: 2px; }
+
+/* ── FEATURES ────────────────────────────────────────────── */
+.feat-hero { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
+.feat-row  { display: flex; flex-direction: column; gap: 16px; }
+.fc {
+  padding: 24px 22px;
+  background: var(--w);
+  border: 1px solid var(--g1);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-card);
+  transition: border-color .2s, box-shadow .2s, transform .2s cubic-bezier(.22,.68,0,1.2);
+}
+.fc:hover {
+  border-color: rgba(0,152,219,.3);
+  box-shadow: var(--shadow-lift), 0 0 0 1px rgba(0,152,219,.08);
+  transform: translateY(-2px);
+}
+.fc-icon {
+  width: 44px; height: 44px; border-radius: 11px;
+  background: linear-gradient(135deg, var(--n), var(--d));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 19px; margin-bottom: 14px;
+}
+.fc-title { font-size: .94rem; font-weight: 700; margin-bottom: 6px; }
+.fc-desc  { color: var(--g2); font-size: .82rem; line-height: 1.65; }
+.fc-list  { margin-top: 12px; display: flex; flex-direction: column; gap: 5px; }
+.fc-list li { font-size: .77rem; color: var(--g2); display: flex; align-items: baseline; gap: 7px; }
+.fc-list li::before { content: '—'; color: var(--e); font-size: .7em; flex-shrink: 0; }
+
+/* ── PRICING ─────────────────────────────────────────────── */
+.pricing-intro { text-align: center; max-width: 520px; margin: 0 auto 40px; }
+.pricing-intro .sh  { margin-bottom: 10px; }
+.pricing-intro .sp  { margin: 0 auto; }
+.pricing-stack { display: flex; flex-direction: column; gap: 20px; max-width: 480px; margin: 0 auto; }
+
+/* Pro first on mobile */
+.pc { border-radius: var(--rl); padding: 30px 24px; position: relative; order: 1; }
+.pc--basic { background: var(--w); border: 1px solid var(--g1); order: 2; }
+.pc--pro {
+  background: var(--dk); border: 1px solid var(--b);
+  box-shadow: 0 0 0 1px var(--d), 0 20px 60px rgba(1,47,211,.3);
+  animation: pro-glow 4s ease-in-out infinite;
+}
+@keyframes pro-glow {
+  0%, 100% { box-shadow: 0 0 0 1px var(--d), 0 20px 60px rgba(1,47,211,.28); }
+  50%       { box-shadow: 0 0 0 1px var(--b), 0 24px 72px rgba(1,90,252,.42); }
+}
+
+.pc-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--d), var(--e));
+  color: var(--w); padding: 4px 16px; border-radius: 100px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; white-space: nowrap;
+}
+.pc-name { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.pc--pro .pc-name { color: var(--w); }
+.pc-tag  { font-size: .77rem; color: var(--g2); margin-bottom: 22px; }
+.pc--pro .pc-tag { color: rgba(255,255,255,.35); }
+
+.pc-impl { display: flex; align-items: baseline; gap: 5px; margin-bottom: 5px; }
+.pc-impl-lbl { font-size: .7rem; color: var(--g2); }
+.pc-impl-val { font-size: 1.45rem; font-weight: 800; letter-spacing: -.03em; color: var(--dk); }
+.pc--pro .pc-impl-val { color: var(--w); }
+
+.pc-monthly { display: flex; align-items: baseline; gap: 3px; }
+.pc-price   { font-size: 2.6rem; font-weight: 900; letter-spacing: -.04em; color: var(--e); line-height: 1; }
+.pc-per     { font-size: .78rem; color: var(--g2); }
+.pc--pro .pc-per { color: rgba(255,255,255,.35); }
+
+.pc-div { height: 1px; background: var(--g1); margin: 20px 0; }
+.pc--pro .pc-div { background: rgba(255,255,255,.08); }
+
+.pc-inc { font-size: .69rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--g2); margin-bottom: 12px; }
+.pc-feats { display: flex; flex-direction: column; gap: 9px; }
+.pc-feats li { display: flex; align-items: flex-start; gap: 9px; font-size: .83rem; color: var(--g2); }
+.pc--pro .pc-feats li { color: rgba(255,255,255,.62); }
+.pc-chk {
+  width: 17px; height: 17px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(0,152,219,.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: var(--e); margin-top: 1px;
+}
+.pc--pro .pc-chk { background: rgba(0,152,219,.2); }
+
+.pc-btn {
+  display: block; width: 100%; padding: 13px;
+  border-radius: var(--r); font-size: .875rem; font-weight: 700;
+  text-align: center; border: none; cursor: pointer;
+  margin-top: 24px; transition: opacity .15s, transform .15s;
+}
+.pc-btn:hover { opacity: .84; transform: translateY(-1px); }
+.pc-btn:active { transform: translateY(0); }
+.pc-btn--out  { background: transparent; border: 1px solid var(--g1); color: var(--dk); }
+.pc-btn--fill { background: linear-gradient(90deg, var(--d), var(--b)); color: var(--w); }
+
+/* ── INVESTMENT TABLE ────────────────────────────────────── */
+/* Card layout on mobile */
+.inv-cards { display: flex; flex-direction: column; gap: 12px; margin-top: 36px; }
+.inv-card {
+  background: var(--w); border: 1px solid var(--g1);
+  border-radius: var(--r); padding: 16px 18px;
+  box-shadow: var(--shadow-card);
+}
+.inv-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 6px; }
+.inv-card-concept { font-size: .88rem; font-weight: 700; color: var(--dk); }
+.inv-card-prices  { display: flex; gap: 12px; flex-shrink: 0; }
+.inv-card-amt     { font-size: .84rem; font-weight: 700; color: var(--d); }
+.inv-card-inc     { font-size: .8rem; font-weight: 500; color: var(--e); }
+.inv-card-desc    { font-size: .78rem; color: var(--g2); line-height: 1.55; }
+.inv-card-labels  { display: flex; gap: 12px; justify-content: flex-end; font-size: .65rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--g2); margin-top: 4px; }
+/* Desktop table (hidden on mobile, shown ≥900px) */
+.inv-table-wrap { display: none; margin-top: 36px; }
+.inv-table { width: 100%; border-collapse: collapse; }
+.inv-table th { text-align: left; padding: 10px 16px; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--g2); border-bottom: 2px solid var(--g1); }
+.inv-table td { padding: 15px 16px; font-size: .875rem; border-bottom: 1px solid var(--g1); vertical-align: top; }
+.inv-table tr:last-child td { border-bottom: none; background: var(--g0); font-weight: 700; }
+.td-concept { font-weight: 600; color: var(--dk); }
+.td-sub  { font-size: .78rem; color: var(--g2); line-height: 1.55; }
+.td-amt  { font-weight: 700; color: var(--d); text-align: right; white-space: nowrap; }
+.td-inc  { font-size: .8rem; font-weight: 500; color: var(--e); text-align: right; }
+
+/* ── NOT INCLUDED ────────────────────────────────────────── */
+.ni-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-top: 28px;
+}
+.ni-item {
+  padding: 11px 14px;
+  background: var(--w); border: 1px solid var(--g1); border-radius: var(--r);
+  font-size: .8rem; color: var(--g2);
+  display: flex; align-items: center; gap: 8px;
+}
+.ni-plus { color: var(--g1); font-weight: 700; font-size: 1em; flex-shrink: 0; }
+
+/* ── STEPS ───────────────────────────────────────────────── */
+.steps { display: flex; flex-direction: column; gap: 0; margin-top: 40px; }
+.step  { display: flex; gap: 20px; }
+.step-left { display: flex; flex-direction: column; align-items: center; }
+.step-num  {
+  width: 38px; height: 38px; border-radius: 9px; flex-shrink: 0;
+  background: rgba(0,152,219,.1); border: 1px solid rgba(0,152,219,.22);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .78rem; font-weight: 800; color: var(--e);
+}
+.step-connector {
+  width: 1px; flex: 1; min-height: 20px;
+  background: linear-gradient(to bottom, rgba(0,152,219,.2), rgba(0,152,219,.05));
+  margin: 6px 0;
+}
+.step:last-child .step-connector { display: none; }
+.step-body { padding-bottom: 28px; padding-top: 6px; }
+.step-t { color: var(--w); font-size: .9rem; font-weight: 700; margin-bottom: 5px; }
+.step-d { color: rgba(255,255,255,.4); font-size: .8rem; line-height: 1.6; }
+
+/* ── MOBILE STICKY CTA ───────────────────────────────────── */
+.mobile-float {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 80;
+  padding: 12px 16px 20px;
+  background: linear-gradient(to top, rgba(26,28,31,1) 60%, rgba(26,28,31,0));
+  display: flex; gap: 8px;
+  transform: translateY(100%);
+  transition: transform .35s cubic-bezier(.22,.68,0,1.2);
+}
+.mobile-float.visible { transform: translateY(0); }
+.mobile-float-btn {
+  flex: 1; padding: 13px; border-radius: var(--r);
+  font-size: .875rem; font-weight: 700; text-align: center;
+  transition: opacity .15s;
+}
+.mobile-float-btn:hover { opacity: .85; }
+.mfb-out  { background: transparent; border: 1px solid rgba(255,255,255,.15); color: rgba(255,255,255,.75); }
+.mfb-fill { background: linear-gradient(90deg, var(--d), var(--b)); color: var(--w); }
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+.footer { background: var(--dk); padding: 32px 20px; border-top: 1px solid rgba(255,255,255,.05); }
+.footer-in {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; text-align: center;
+}
+.footer-brand { display: flex; align-items: center; gap: 10px; }
+.footer-brand svg { height: 24px; width: auto; }
+.footer-name { color: var(--w); font-size: .82rem; font-weight: 700; }
+.footer-site { color: var(--g2); font-size: .72rem; }
+.footer-meta { color: var(--g2); font-size: .73rem; line-height: 1.7; }
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (min-width: 480px) {
+  .struct-negs { grid-template-columns: repeat(3, 1fr); }
+  .ni-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 640px) {
+  .topbar { padding: 0 32px; }
+  .topbar-date { display: block; }
+  .sec { padding: 80px 32px; }
+  .hero { padding: 120px 32px 88px; }
+  .struct-box { padding: 44px 36px; }
+  .struct-negs { grid-template-columns: repeat(5, 1fr); }
+  .feat-row { display: grid; grid-template-columns: 1fr 1fr; }
+  .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .step { flex-direction: column; gap: 12px; }
+  .step-left { flex-direction: row; align-items: center; gap: 12px; }
+  .step-connector { width: auto; height: 1px; flex: 1; min-height: unset; margin: 0; background: linear-gradient(to right, rgba(0,152,219,.2), rgba(0,152,219,.05)); }
+  .step-body { padding-bottom: 0; padding-top: 0; }
+}
+
+@media (min-width: 900px) {
+  .topbar { padding: 0 40px; }
+  .sec { padding: 88px 40px; }
+  .hero { padding: 130px 40px 96px; }
+  .ov-grid { flex-direction: row; gap: 56px; align-items: start; }
+  .ov-body { flex: 1; }
+  .ov-cards { flex: 1; }
+  .feat-hero { gap: 20px; }
+  .feat-row { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  /* First feature section: 2 big cards */
+  .feat-big { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .pricing-stack { flex-direction: row; max-width: 840px; align-items: flex-start; }
+  .pc { flex: 1; }
+  .pc--basic { order: 1; }
+  .pc--pro   { order: 2; flex: 1.08; }
+  .inv-cards { display: none; }
+  .inv-table-wrap { display: block; }
+  .steps { grid-template-columns: repeat(4, 1fr); }
+  .step-left { flex-direction: row; align-items: center; }
+  .footer-in { flex-direction: row; justify-content: space-between; text-align: left; }
+  .footer-meta { text-align: right; }
+  .mobile-float { display: none; }
+  .ni-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 1100px) {
+  .feat-row { gap: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .hero::before { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-logo">
+    <svg width="350" height="350" viewBox="0 0 350 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 40C0 17.9086 17.9086 0 40 0H310C332.091 0 350 17.9086 350 40C350 62.0914 332.091 80 310 80H40C17.9086 80 0 62.0914 0 40Z" fill="white"/>
+      <path d="M0 178.5C0 156.132 18.1325 138 40.5 138H269C313.735 138 350 174.265 350 219L237 219L40.5 219C18.1325 219 0 200.868 0 178.5Z" fill="white"/>
+      <path d="M350 219L237 219C279.5 219 279.5 269 237 269L350 269V219Z" fill="white"/>
+      <path d="M350 269L237 269L40.5 269C18.1325 269 0 287.132 0 309.5C0 331.868 18.1325 350 40.5 350H269C313.735 350 350 313.735 350 269Z" fill="white"/>
+    </svg>
+    <span class="topbar-name">Servicios Digitales</span>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-date">25 de junio, 2026</span>
+    <a href="#planes" class="topbar-cta">Ver planes</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="hero-inner">
+    <div class="hero-pill" id="hero-pill">
+      <span class="hero-dot"></span>
+      Plan Multi-Negocio Pro
+    </div>
+    <h1 class="hero-h1" id="hero-h1">
+      Panel Administrativo<br><em>Multi-Negocio</em>
+    </h1>
+    <p class="hero-sub" id="hero-sub">
+      Una plataforma web para administrar varios negocios desde una sola cuenta. Inventario, ventas, gastos y reportes centralizados.
+    </p>
+    <div class="hero-for" id="hero-for">
+      <span class="hero-for-pre">Presentado a&nbsp;</span>
+      <span class="hero-for-name">Grupo Empresarial</span>
+    </div>
+    <div class="hero-scroll" id="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Explorar</span>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="sec" id="s-overview">
+  <div class="wrap">
+    <div class="hd">
+      <h2 class="sh">Un sistema diseñado para<br>múltiples negocios</h2>
+      <p class="sp">Centralizá la operación de todos tus negocios sin perder la independencia de cada uno.</p>
+    </div>
+    <div class="ov-grid">
+      <div class="ov-body">
+        <h3>¿Qué problema resuelve?</h3>
+        <p>Administrar varios negocios hoy significa manejar hojas de cálculo separadas, cuadernos y sistemas desconectados. Nada habla con nada y el dueño no sabe cuánto gana cada negocio.</p>
+        <p>El Panel Multi-Negocio centraliza todo: inventario, ventas, gastos y usuarios, manteniendo cada negocio independiente pero con reportes unificados para quien lo administra todo.</p>
+        <p>El resultado: en segundos sabés qué negocio es más rentable, qué productos tienen stock bajo y cuánto se vendió hoy, desde cualquier dispositivo.</p>
+      </div>
+      <div class="ov-cards" id="ov-cards">
+        <div class="ov-card">
+          <div class="ov-icon">🏢</div>
+          <div class="ov-text"><strong>Hasta 5 negocios bajo una cuenta</strong><span>Farmacia, carwash, tienda y más. Inventario y reportes separados por negocio.</span></div>
+        </div>
+        <div class="ov-card">
+          <div class="ov-icon">📊</div>
+          <div class="ov-text"><strong>Dashboard general de empresa</strong><span>Ventas totales, gastos y ganancia estimada de todos los negocios en un solo panel.</span></div>
+        </div>
+        <div class="ov-card">
+          <div class="ov-icon">📱</div>
+          <div class="ov-text"><strong>Acceso desde cualquier dispositivo</strong><span>PC, tablet o celular. Sin instalar nada. El dueño revisa desde el celular; el cajero opera desde la computadora.</span></div>
+        </div>
+        <div class="ov-card">
+          <div class="ov-icon">👥</div>
+          <div class="ov-text"><strong>Usuarios con permisos por rol</strong><span>Administrador general, cajero, inventario. Cada usuario ve y hace solo lo que le corresponde.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRUCTURE -->
+<section class="sec sec--alt" id="s-struct">
+  <div class="wrap">
+    <div class="hd">
+      <h2 class="sh">Una empresa, varios negocios</h2>
+      <p class="sp">El sistema se organiza bajo una empresa principal. Cada negocio opera de forma independiente pero el administrador ve todo desde arriba.</p>
+    </div>
+    <div class="struct-box">
+      <div class="struct-root">
+        <div class="struct-icon">🏛️</div>
+        <div class="struct-name">Grupo Empresarial</div>
+        <div class="struct-sub">Empresa principal · Administrador general</div>
+      </div>
+      <div class="struct-line"></div>
+      <div class="struct-negs" id="struct-negs">
+        <div class="neg"><div class="neg-em">💊</div><div class="neg-nm">Farmacia</div><div class="neg-lbl">Negocio 1</div></div>
+        <div class="neg"><div class="neg-em">🚗</div><div class="neg-nm">Carwash</div><div class="neg-lbl">Negocio 2</div></div>
+        <div class="neg"><div class="neg-em">🛒</div><div class="neg-nm">Tienda</div><div class="neg-lbl">Negocio 3</div></div>
+        <div class="neg"><div class="neg-em">🏪</div><div class="neg-nm">Mini Market</div><div class="neg-lbl">Negocio 4</div></div>
+        <div class="neg"><div class="neg-em">⚙️</div><div class="neg-nm">Personalizado</div><div class="neg-lbl">Negocio 5</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="sec" id="s-features">
+  <div class="wrap">
+    <div class="hd">
+      <h2 class="sh">Todo incluido en el plan</h2>
+      <p class="sp">Seis módulos que cubren la operación completa. Ninguno tiene costo adicional.</p>
+    </div>
+    <div class="feat-hero">
+      <!-- Row 1: 2 wide cards -->
+      <div class="feat-big" id="feat-big">
+        <div class="fc">
+          <div class="fc-icon">📦</div>
+          <h3 class="fc-title">Inventario por negocio</h3>
+          <p class="fc-desc">Cada negocio tiene su propio inventario independiente. Stock en tiempo real, alertas de bajo inventario y control de entradas y salidas.</p>
+          <ul class="fc-list">
+            <li>Registro de productos y categorías</li>
+            <li>Precio de costo y precio de venta</li>
+            <li>Stock mínimo con alertas automáticas</li>
+            <li>Control de entradas y salidas</li>
+            <li>Búsqueda rápida de productos</li>
+          </ul>
+        </div>
+        <div class="fc">
+          <div class="fc-icon">🔍</div>
+          <h3 class="fc-title">Código de barras</h3>
+          <p class="fc-desc">Compatible con lectores USB estándar tipo teclado. Agiliza las ventas y elimina errores de captura manual en farmacias, tiendas y mini markets.</p>
+          <ul class="fc-list">
+            <li>Registro de código por producto</li>
+            <li>Búsqueda instantánea al escanear</li>
+            <li>Venta rápida sin captura manual</li>
+            <li>Compatible con lectores estándar USB</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Row 2: 4 compact cards -->
+      <div class="feat-row" id="feat-row">
+        <div class="fc">
+          <div class="fc-icon">🧾</div>
+          <h3 class="fc-title">Registro de ventas</h3>
+          <p class="fc-desc">Cada venta registra productos, método de pago, descuentos y ganancia estimada. Historial completo por cajero y por negocio.</p>
+        </div>
+        <div class="fc">
+          <div class="fc-icon">💸</div>
+          <h3 class="fc-title">Registro de gastos</h3>
+          <p class="fc-desc">Renta, sueldos, insumos, publicidad. Registrá todos los gastos operativos por negocio para calcular la ganancia real.</p>
+        </div>
+        <div class="fc">
+          <div class="fc-icon">📈</div>
+          <h3 class="fc-title">Dashboard y reportes</h3>
+          <p class="fc-desc">Panel general de empresa y dashboard por negocio. Reportes por rango de fechas y negocio más rentable del mes.</p>
+        </div>
+        <div class="fc">
+          <div class="fc-icon">👤</div>
+          <h3 class="fc-title">Usuarios y permisos</h3>
+          <p class="fc-desc">Administrador general, admin de negocio, cajero e inventario. Cada rol accede solo a lo que necesita.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="sec sec--alt" id="planes">
+  <div class="wrap">
+    <div class="pricing-intro">
+      <h2 class="sh">Planes disponibles</h2>
+      <p class="sp">Ambos incluyen todos los módulos. La diferencia es cuántos negocios podés administrar.</p>
+    </div>
+    <div class="pricing-stack" id="pricing-stack">
+
+      <!-- Pro first (order-1 on mobile) -->
+      <div class="pc pc--pro">
+        <div class="pc-badge">Recomendado</div>
+        <div class="pc-name">Plan Multi-Negocio Pro</div>
+        <div class="pc-tag">Para empresas con varios negocios activos</div>
+        <div class="pc-impl">
+          <span class="pc-impl-lbl" style="color:rgba(255,255,255,.3)">Implementación&nbsp;</span>
+          <span class="pc-impl-val" id="pro-impl">Q4,900</span>
+        </div>
+        <div class="pc-monthly">
+          <span class="pc-price" id="pro-price">Q700</span>
+          <span class="pc-per">&nbsp;/ mes</span>
+        </div>
+        <div class="pc-div"></div>
+        <p class="pc-inc">Incluye</p>
+        <ul class="pc-feats">
+          <li><span class="pc-chk">✓</span> 1 empresa principal</li>
+          <li><span class="pc-chk">✓</span> Hasta 5 negocios</li>
+          <li><span class="pc-chk">✓</span> Inventario por negocio</li>
+          <li><span class="pc-chk">✓</span> Registro de ventas y gastos</li>
+          <li><span class="pc-chk">✓</span> Código de barras</li>
+          <li><span class="pc-chk">✓</span> Usuarios y permisos</li>
+          <li><span class="pc-chk">✓</span> Dashboard y reportes</li>
+          <li><span class="pc-chk">✓</span> Hosting, backups y soporte</li>
+          <li><span class="pc-chk">✓</span> Capacitación inicial del equipo</li>
+          <li><span class="pc-chk">✓</span> Puesta en marcha completa</li>
+        </ul>
+        <a href="#contacto" class="pc-btn pc-btn--fill">Aprobar propuesta</a>
+      </div>
+
+      <!-- Basic second (order-2 on mobile) -->
+      <div class="pc pc--basic">
+        <div class="pc-name">Plan Básico</div>
+        <div class="pc-tag">Para empezar con 2 negocios</div>
+        <div class="pc-impl">
+          <span class="pc-impl-lbl">Implementación&nbsp;</span>
+          <span class="pc-impl-val">Q2,500</span>
+        </div>
+        <div class="pc-monthly">
+          <span class="pc-price">Q500</span>
+          <span class="pc-per">&nbsp;/ mes</span>
+        </div>
+        <div class="pc-div"></div>
+        <p class="pc-inc">Incluye</p>
+        <ul class="pc-feats">
+          <li><span class="pc-chk">✓</span> 1 empresa principal</li>
+          <li><span class="pc-chk">✓</span> Hasta 2 negocios</li>
+          <li><span class="pc-chk">✓</span> Inventario por negocio</li>
+          <li><span class="pc-chk">✓</span> Registro de ventas y gastos</li>
+          <li><span class="pc-chk">✓</span> Código de barras</li>
+          <li><span class="pc-chk">✓</span> Usuarios y permisos</li>
+          <li><span class="pc-chk">✓</span> Dashboard y reportes</li>
+          <li><span class="pc-chk">✓</span> Hosting, backups y soporte</li>
+        </ul>
+        <a href="#contacto" class="pc-btn pc-btn--out">Consultar disponibilidad</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT -->
+<section class="sec" id="s-invest">
+  <div class="wrap">
+    <div class="hd">
+      <h2 class="sh">¿Qué incluye cada pago?</h2>
+      <p class="sp">Sin costos ocultos. Todo lo que cubre la implementación y la mensualidad.</p>
+    </div>
+
+    <!-- Mobile: cards -->
+    <div class="inv-cards" id="inv-cards">
+      <div class="inv-card">
+        <div class="inv-card-top">
+          <span class="inv-card-concept">Implementación inicial</span>
+          <div class="inv-card-prices">
+            <span class="inv-card-amt">Q2,500</span>
+            <span class="inv-card-amt">Q4,900</span>
+          </div>
+        </div>
+        <div class="inv-card-labels"><span>Básico</span><span>Pro</span></div>
+        <p class="inv-card-desc">Configuración del sistema, negocios, usuarios, módulos y puesta en marcha.</p>
+      </div>
+      <div class="inv-card">
+        <div class="inv-card-top">
+          <span class="inv-card-concept">Hosting + Base de datos</span>
+          <div class="inv-card-prices"><span class="inv-card-inc">Incluido</span><span class="inv-card-inc">Incluido</span></div>
+        </div>
+        <div class="inv-card-labels"><span>Básico</span><span>Pro</span></div>
+        <p class="inv-card-desc">Servidor web y almacenamiento seguro, accesible 24/7 desde cualquier dispositivo.</p>
+      </div>
+      <div class="inv-card">
+        <div class="inv-card-top">
+          <span class="inv-card-concept">Backups + Soporte técnico</span>
+          <div class="inv-card-prices"><span class="inv-card-inc">Incluido</span><span class="inv-card-inc">Incluido</span></div>
+        </div>
+        <div class="inv-card-labels"><span>Básico</span><span>Pro</span></div>
+        <p class="inv-card-desc">Respaldos automáticos, corrección de errores, monitoreo y actualizaciones menores.</p>
+      </div>
+      <div class="inv-card" style="background:var(--g0)">
+        <div class="inv-card-top">
+          <span class="inv-card-concept">Mensualidad total</span>
+          <div class="inv-card-prices">
+            <span class="inv-card-amt">Q500/mes</span>
+            <span class="inv-card-amt">Q700/mes</span>
+          </div>
+        </div>
+        <div class="inv-card-labels"><span>Básico</span><span>Pro</span></div>
+        <p class="inv-card-desc">Todo lo anterior de forma recurrente. Sin contratos de largo plazo.</p>
+      </div>
+    </div>
+
+    <!-- Desktop: table -->
+    <div class="inv-table-wrap">
+      <table class="inv-table" id="inv-table">
+        <thead>
+          <tr>
+            <th style="width:26%">Concepto</th>
+            <th>¿Qué cubre?</th>
+            <th style="text-align:right;width:13%">Plan Básico</th>
+            <th style="text-align:right;width:13%">Plan Pro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-concept">Implementación inicial</td>
+            <td class="td-sub">Configuración del sistema, negocios, usuarios, módulos y puesta en marcha.</td>
+            <td class="td-amt">Q2,500</td><td class="td-amt">Q4,900</td>
+          </tr>
+          <tr>
+            <td class="td-concept">Hosting</td>
+            <td class="td-sub">Servidor web donde corre la plataforma, accesible 24/7.</td>
+            <td class="td-inc">Incluido</td><td class="td-inc">Incluido</td>
+          </tr>
+          <tr>
+            <td class="td-concept">Base de datos</td>
+            <td class="td-sub">Almacenamiento seguro de inventario, ventas, gastos y usuarios.</td>
+            <td class="td-inc">Incluido</td><td class="td-inc">Incluido</td>
+          </tr>
+          <tr>
+            <td class="td-concept">Backups automáticos</td>
+            <td class="td-sub">Respaldo periódico de todos los datos para prevenir pérdida de información.</td>
+            <td class="td-inc">Incluido</td><td class="td-inc">Incluido</td>
+          </tr>
+          <tr>
+            <td class="td-concept">Soporte técnico</td>
+            <td class="td-sub">Atención a dudas, corrección de errores y monitoreo del sistema.</td>
+            <td class="td-inc">Incluido</td><td class="td-inc">Incluido</td>
+          </tr>
+          <tr>
+            <td class="td-concept">Actualizaciones menores</td>
+            <td class="td-sub">Mejoras y correcciones incluidas en la mensualidad.</td>
+            <td class="td-inc">Incluido</td><td class="td-inc">Incluido</td>
+          </tr>
+          <tr>
+            <td class="td-concept">Mensualidad total</td>
+            <td class="td-sub">Todo lo anterior de forma recurrente. Sin contratos de largo plazo.</td>
+            <td class="td-amt" style="font-size:1rem">Q500/mes</td>
+            <td class="td-amt" style="font-size:1rem">Q700/mes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- NOT INCLUDED -->
+<section class="sec sec--alt" id="s-ni">
+  <div class="wrap">
+    <div class="hd">
+      <h2 class="sh" style="font-size:clamp(1.35rem,3.5vw,1.9rem)">Funciones para una segunda fase</h2>
+      <p class="sp">Estas funciones pueden cotizarse por separado o añadirse más adelante.</p>
+    </div>
+    <div class="ni-grid" id="ni-grid">
+      <div class="ni-item"><span class="ni-plus">+</span> Facturación electrónica FEL</div>
+      <div class="ni-item"><span class="ni-plus">+</span> Integración con WhatsApp</div>
+      <div class="ni-item"><span class="ni-plus">+</span> Cuentas por cobrar / pagar</div>
+      <div class="ni-item"><span class="ni-plus">+</span> Módulo avanzado de proveedores</div>
+      <div class="ni-item"><span class="ni-plus">+</span> Múltiples sucursales por negocio</div>
+      <div class="ni-item"><span class="ni-plus">+</span> Integración con pasarelas de pago</div>
+      <div class="ni-item"><span class="ni-plus">+</span> Lotes y vencimientos detallados</div>
+      <div class="ni-item"><span class="ni-plus">+</span> Reportes personalizados avanzados</div>
+      <div class="ni-item"><span class="ni-plus">+</span> Migración masiva desde Excel</div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT STEPS -->
+<section class="sec sec--dk" id="contacto">
+  <div class="wrap">
+    <div class="hd">
+      <h2 class="sh sh--w">¿Cómo arrancamos?</h2>
+      <p class="sp sp--w">Una vez aprobada la propuesta, el proceso es directo y sin complicaciones.</p>
+    </div>
+    <div class="steps" id="steps">
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">01</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3 class="step-t">Aprobación</h3>
+          <p class="step-d">Se confirma el plan elegido y se coordina el pago de la implementación inicial.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">02</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3 class="step-t">Configuración inicial</h3>
+          <p class="step-d">Se configura la empresa principal, los negocios, los usuarios y todos los módulos.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">03</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3 class="step-t">Capacitación</h3>
+          <p class="step-d">Sesión de capacitación con el equipo para el uso correcto desde el primer día.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">04</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3 class="step-t">Sistema activo</h3>
+          <p class="step-d">El sistema queda operando con soporte técnico disponible desde el primer día.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-in">
+    <div class="footer-brand">
+      <svg width="350" height="350" viewBox="0 0 350 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 40C0 17.9086 17.9086 0 40 0H310C332.091 0 350 17.9086 350 40C350 62.0914 332.091 80 310 80H40C17.9086 80 0 62.0914 0 40Z" fill="white"/>
+        <path d="M0 178.5C0 156.132 18.1325 138 40.5 138H269C313.735 138 350 174.265 350 219L237 219L40.5 219C18.1325 219 0 200.868 0 178.5Z" fill="white"/>
+        <path d="M350 219L237 219C279.5 219 279.5 269 237 269L350 269V219Z" fill="white"/>
+        <path d="M350 269L237 269L40.5 269C18.1325 269 0 287.132 0 309.5C0 331.868 18.1325 350 40.5 350H269C313.735 350 350 313.735 350 269Z" fill="white"/>
+      </svg>
+      <div>
+        <div class="footer-name">Servicios Digitales</div>
+        <div class="footer-site">serviciosdigitalesgtm.com</div>
+      </div>
+    </div>
+    <div class="footer-meta">
+      Propuesta válida por 30 días · 25 de junio, 2026<br>
+      Soluciones digitales para empresas y emprendedores
+    </div>
+  </div>
+</footer>
+
+<!-- MOBILE STICKY CTA -->
+<div class="mobile-float" id="mobile-float">
+  <a href="#s-invest" class="mobile-float-btn mfb-out">Ver desglose</a>
+  <a href="#planes"   class="mobile-float-btn mfb-fill">Ver planes</a>
+</div>
+
+<!-- GSAP -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+(function () {
+  /* Respect prefers-reduced-motion */
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ── HERO ENTRANCE ─────────────────────────────────── */
+  const heroTl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+  heroTl
+    .from('#hero-pill',   { y: 24, opacity: 0, duration: .7 })
+    .from('#hero-h1',     { y: 36, opacity: 0, duration: .8 }, '-=.4')
+    .from('#hero-sub',    { y: 24, opacity: 0, duration: .7 }, '-=.45')
+    .from('#hero-for',    { y: 18, opacity: 0, duration: .6 }, '-=.4')
+    .from('#hero-scroll', { opacity: 0, duration: .5 },        '-=.2');
+
+  /* ── MOBILE STICKY CTA ─────────────────────────────── */
+  const mobileFloat = document.getElementById('mobile-float');
+  ScrollTrigger.create({
+    trigger: '.hero',
+    start: 'bottom 40%',
+    onEnter:    () => mobileFloat.classList.add('visible'),
+    onLeaveBack:() => mobileFloat.classList.remove('visible'),
+  });
+
+  /* ── HELPER: section reveal ────────────────────────── */
+  function revealSection(trigger, targets, staggerDelay = 0) {
+    gsap.from(targets, {
+      scrollTrigger: { trigger, start: 'top 82%', once: true },
+      y: 36, opacity: 0, duration: .7,
+      ease: 'power3.out',
+      stagger: staggerDelay,
+    });
+  }
+
+  /* ── OVERVIEW ──────────────────────────────────────── */
+  revealSection('#s-overview .hd',   '#s-overview .hd');
+  revealSection('#s-overview .ov-body', '#s-overview .ov-body');
+  revealSection('#ov-cards', '#ov-cards .ov-card', .1);
+
+  /* ── STRUCTURE ─────────────────────────────────────── */
+  revealSection('#s-struct .hd', '#s-struct .hd');
+  gsap.from('.struct-box .struct-root', {
+    scrollTrigger: { trigger: '.struct-box', start: 'top 80%', once: true },
+    scale: .92, opacity: 0, duration: .6, ease: 'power3.out',
+  });
+  gsap.from('#struct-negs .neg', {
+    scrollTrigger: { trigger: '#struct-negs', start: 'top 85%', once: true },
+    y: 28, opacity: 0, scale: .92, duration: .5, ease: 'power3.out',
+    stagger: .08,
+  });
+
+  /* ── FEATURES ──────────────────────────────────────── */
+  revealSection('#s-features .hd', '#s-features .hd');
+  gsap.from('#feat-big .fc', {
+    scrollTrigger: { trigger: '#feat-big', start: 'top 82%', once: true },
+    y: 32, opacity: 0, duration: .65, ease: 'power3.out', stagger: .12,
+  });
+  gsap.from('#feat-row .fc', {
+    scrollTrigger: { trigger: '#feat-row', start: 'top 84%', once: true },
+    y: 28, opacity: 0, duration: .55, ease: 'power3.out', stagger: .08,
+  });
+
+  /* ── PRICING ───────────────────────────────────────── */
+  revealSection('#planes .pricing-intro', '#planes .pricing-intro');
+  gsap.from('.pc--pro', {
+    scrollTrigger: { trigger: '#pricing-stack', start: 'top 80%', once: true },
+    y: 40, opacity: 0, scale: .97, duration: .75, ease: 'power3.out',
+  });
+  gsap.from('.pc--basic', {
+    scrollTrigger: { trigger: '#pricing-stack', start: 'top 80%', once: true },
+    y: 32, opacity: 0, duration: .65, ease: 'power3.out', delay: .14,
+  });
+
+  /* Count-up for Pro card prices */
+  function countUp(el, target, prefix, suffix, dur) {
+    const start = performance.now();
+    const step = (now) => {
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 4);
+      el.textContent = prefix + Math.round(eased * target).toLocaleString('es-GT') + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  ScrollTrigger.create({
+    trigger: '.pc--pro',
+    start: 'top 78%',
+    once: true,
+    onEnter() {
+      countUp(document.getElementById('pro-impl'),  4900, 'Q', '', 900);
+      countUp(document.getElementById('pro-price'), 700,  'Q', '', 700);
+    },
+  });
+
+  /* ── INVESTMENT ────────────────────────────────────── */
+  revealSection('#s-invest .hd', '#s-invest .hd');
+  gsap.from('#inv-cards .inv-card', {
+    scrollTrigger: { trigger: '#inv-cards', start: 'top 84%', once: true },
+    y: 24, opacity: 0, duration: .5, ease: 'power3.out', stagger: .08,
+  });
+  gsap.from('#inv-table tbody tr', {
+    scrollTrigger: { trigger: '#inv-table', start: 'top 84%', once: true },
+    x: -16, opacity: 0, duration: .45, ease: 'power2.out', stagger: .07,
+  });
+
+  /* ── NOT INCLUDED ──────────────────────────────────── */
+  revealSection('#s-ni .hd', '#s-ni .hd');
+  gsap.from('#ni-grid .ni-item', {
+    scrollTrigger: { trigger: '#ni-grid', start: 'top 85%', once: true },
+    y: 18, opacity: 0, duration: .4, ease: 'power2.out', stagger: .05,
+  });
+
+  /* ── STEPS ─────────────────────────────────────────── */
+  revealSection('#contacto .hd', '#contacto .hd');
+  gsap.from('#steps .step', {
+    scrollTrigger: { trigger: '#steps', start: 'top 82%', once: true },
+    y: 30, opacity: 0, duration: .6, ease: 'power3.out', stagger: .12,
+  });
+
+  /* ── FOOTER ────────────────────────────────────────── */
+  gsap.from('.footer-in > *', {
+    scrollTrigger: { trigger: '.footer', start: 'top 90%', once: true },
+    y: 20, opacity: 0, duration: .6, ease: 'power3.out', stagger: .1,
+  });
+
+})();
+</script>
+</body>
+</html>
